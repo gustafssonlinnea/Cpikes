@@ -1,0 +1,11 @@
+# Database and cache
+processedData/*
+!processedData/modelFileNames.json
+!processedData/modelFileNamesSmall.json
+cache/
+
+# Other
+.DS_Store
+.vscode/
+__pycache__/
+babel.json

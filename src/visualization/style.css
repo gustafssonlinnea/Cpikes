@@ -1,0 +1,823 @@
+/* Variables */
+:root {
+    /* Theme colors */
+    --primary-color: rgb(100, 100, 205);
+    --primary-color-semi-transparent: rgba(100, 100, 205, 0.2);
+    --primary-color-semi-transparent-2: rgba(100, 100, 205, 0.5);
+    --secondary-color: rgb(50, 50, 205);
+    --tertiary-color: rgb(208, 208, 234);
+    --quarterary-color: rgb(0, 0, 205);
+    --quinary-color: hsl(240, 50%, 25%);
+
+    /* Other colors */
+    --hover-color: rgb(50, 155, 155);
+    --hover-color-background: rgba(50, 155, 155, 0.2);
+    --hover-color-collapsible: var(--primary-color-semi-transparent);
+    --target-color: hsl(130, 80%, 70%);
+    --target-shadow-color: hsl(130, 97%, 33%);
+    --selection-color: var(--secondary-color);
+    --no-selection-color: rgb(125, 125, 125);
+    --glow-color: rgb(230, 230, 255);
+    --disable-color: rgb(205, 205, 205);
+    --disable-color-semi-transparent: rgba(210, 210, 210, 0.5);
+    --default-stroke-color: rgb(208, 208, 216);
+    --stroke-color: var(--disable-color);
+    --dropdown-color: rgb(214, 214, 223);
+    --tooltip-background: var(--tertiary-color);
+    --setting-background: rgba(0, 0, 0, 0.08);
+    --tooltip-text-color: black;
+    --infobox-background: rgb(243, 243, 255);
+    --axis-default-color: black;
+
+    /* Side bars */
+    --sidebars-background-color: rgba(0, 0, 0, 0.1);
+    --sidebars-border-color: transparent;
+    --sidebars-border-radius: 10px;
+
+    /* Stroke/border widths and radii */
+    --stroke-width: 2pt;
+    --stroke-width-cluster: 1;
+    --hover-stroke-width: 4px;
+    --border-radius: 10px;
+
+    /* Padding and margin */
+    --padding: 24px;
+    --mid-padding: 18px;
+    --half-padding: 12px;
+    --tiny-padding: 3px;
+    --margin: 12px;
+    --half-margin: 6px;
+    
+    /* Sliders */
+    --runnable-track-color: transparent;
+    --slider-width: 10px;
+    --slider-thumb-width: 14px;
+
+    /* Hover info */
+    --neuron-radius: 24;
+    --hover-info-height: 300px;
+}
+
+/* Basic styling */
+* {
+    font-size: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 9pt;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    min-width: 1000px;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-image: radial-gradient(ellipse, white 40%, var(--primary-color) 170%);
+}
+
+h1 {
+    font-size: 20pt;
+}
+
+h3 {
+    font-size: 10pt;
+    text-align: left;
+    margin-top: 0;
+}
+
+.h3-2 {
+    font-size: 10pt;
+    text-align: left;
+    margin-top: 0;
+    font-weight: bold;
+}
+
+h4 {
+    font-size: 12pt;
+    margin: var(--padding) var(--half-margin) var(--margin) var(--half-margin);
+}
+
+h5 {
+    color: #333;
+}
+
+a:link {
+    color: var(--primary-color);
+}
+
+a:visited {
+    color: var(--secondary-color);
+}
+
+a:hover {
+    color: var(--quarternary-color);
+}
+
+a:active {  /* Selected link */
+    color: var(--quarternary-color);
+}
+
+select {
+    cursor: pointer;
+    width: 100%;
+    padding: 10px;
+    padding-right: 50px;
+    border: none;
+    border-radius: var(--border-radius);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #f8f8f8;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 9l6 6 6-6"></path></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+select:focus {
+    outline: none;
+}
+
+circle target {
+    stroke-width: 5px;
+}
+
+circle:hover {
+    cursor: pointer;
+}
+
+circle.dissimilar-to-target {
+    fill: var(--disable-color) !important;
+    stroke: transparent;
+}
+
+/* Containers */
+.header-container {
+    text-align: left;
+    margin-top: var(--half-margin);
+    margin-bottom: 0;
+    padding: var(--half-padding);
+}
+
+.main-container { 
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-content: space-evenly;
+    justify-content: space-evenly;
+    overflow-y: auto;
+} 
+
+.mid-container { 
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 100%;
+    justify-content: center;
+    align-content: center;
+    overflow-y: auto;
+} 
+
+.settings-container-parent {
+    display: flex;
+    flex-direction: column;
+    align-content: start;
+    background-color: var(--sidebars-background-color);
+    margin-left: var(--stroke-width);
+    margin-right: var(--stroke-width);
+}
+
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    margin: 0;
+}
+
+.setting-container {
+    padding: var(--padding);
+}
+
+.sidebar-container {
+    display: flex;
+    justify-content: start;
+    width: 20%;
+    min-width: 410px;
+    margin: 0;
+    flex-direction: column;
+    overflow-y: auto;
+    background-color: var(--sidebars-background-color);
+    padding: var(--tiny-padding);
+} 
+
+.dashboard {
+    padding: 0 var(--half-margin) var(--half-margin) var(--half-margin);
+}
+
+.dashboard-child {
+    display: flex;
+    align-content: left;
+    flex-direction: column;
+    margin: var(--half-margin);
+    padding: var(--mid-padding);
+    border-radius: var(--border-radius);
+    background-color: var(--setting-background);
+}
+
+.header-dashboard {
+    position: relative;
+}
+
+.input-image-container {
+    display: flex;
+    justify-content: center;
+}
+
+#output {
+    display: flex;
+    justify-content: left;
+    align-content: center;
+    height: 100%;
+    margin: 0;
+    color: black;
+}
+
+.mid-header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0;
+}
+
+.header {
+    -webkit-text-stroke-color: var(--primary-color);
+    -webkit-text-stroke-width: 1pt;
+    font-size: 22pt;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: transparent;
+}
+
+.cpikes-container {
+    display: flex;
+    position: relative;
+    flex-direction: column;  /** TODO: Flex in both directions */
+    justify-content: center;
+    align-content: center;
+    margin: var(--margin);
+}
+
+.cpikes {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+/* Collapsible */
+.collapsible {
+    cursor: pointer;
+    width: 100%;
+    margin-top: var(--half-margin);
+    padding: var(--mid-padding);
+    border: none;
+    border-radius: var(--border-radius);
+    text-align: left;
+    color: black;
+    background-color: var(--setting-background);
+}
+
+.collapsible:hover {
+    background-color: var(--hover-color-background);
+}
+  
+.collapsible:after {
+    content: "\002B";  /* Plus sign */
+    float: right;
+    margin-left: var(--half-margin);
+    font-weight: bold;
+    color: black;
+}
+  
+.active:after {
+    content: "\2212";  /* Minus sign */
+}
+  
+.content {
+    max-height: 0;
+    overflow: hidden;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    background-color: var(--setting-background);
+}
+
+.content-child {
+    display: flex;
+    align-content: left;
+    flex-direction: column;
+    margin: 0 var(--mid-padding) var(--mid-padding) var(--mid-padding);
+}
+
+/* Table */
+.table-dashboard {
+    margin-top: var(--margin);
+    margin: var(--tiny-padding);
+    tr:nth-child(odd){background-color: rgba(255, 255, 255, 0.3);}
+    tr:nth-child(even){background-color: rgba(255, 255, 255, 0.1);}
+    tr:hover {background-color: var(--hover-color)}
+    td:first-child {font-weight: bold;}
+}
+
+.table-hover-info {
+    width: 100%;
+    td:first-child {width: 150px;}
+}
+
+.table-hover-info-neuron-dist {
+    width: 100%;
+    td:first-child {width: 244px;}
+    padding: var(--tiny-padding);
+}
+
+.table-hover-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    width: 70%;
+    height: 100%;    
+    margin: 0;
+}
+
+#firing-rate-table, #dist-to-target-table {
+    flex: 1;  /* Distribute available space equally */
+}
+
+#selection-table {
+    td:nth-child(2) {min-width: 50px;}
+    flex: 1; /* Distribute available space equally */
+}
+
+/* Neuron and cluster */
+.neuron {
+    cursor: pointer;
+}
+
+.cluster {
+    stroke: var(--default-stroke-color);
+    stroke-width: var(--stroke-width-cluster);
+}
+
+.drop-shadow {
+    filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.5));
+}
+
+/* Network graph */
+#neural-network {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.snn-neuron {
+    cursor: default !important;
+    fill: white;
+}
+
+.snn-dot {
+    fill: black;
+}
+
+.snn-connection {
+    stroke: rgba(0, 0, 0, 0.009);
+    stroke-width: 5pt;
+}
+
+/* Tooltip/Hover info */
+.tooltip {
+    pointer-events: none; /* Ensure tooltips don't interfere with mouse events */
+    display: none; /* Initially hide the tooltip */
+    position: absolute;
+    min-width: 200px;
+    min-height: 100px;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    text-align: left;
+    color: var(--tooltip-text-color) !important;
+    background: var(--tooltip-background);
+}
+
+.tooltip-header {
+    margin: 5px;
+    font-size: 12pt;
+    font-weight: bold;
+}
+
+.tooltip-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: start;
+    margin: var(--margin) 0 var(--padding) 0;
+    padding-left: var(--half-padding);
+    padding-right: var(--half-padding);
+}
+
+.tooltip-section-2 {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping of flex items */
+    margin: 0;
+    padding-left: var(--half-padding);
+    padding-right: var(--half-padding);
+}
+
+.tooltip-section-3 {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping of flex items */
+    margin-top: var(--margin);
+}
+
+#hover-info-container {
+    height: var(--hover-info-height);
+    margin: 0;
+    padding: var(--half-padding);
+    border: var(--stroke-width) solid transparent;
+    border-radius: var(--border-radius);
+    background-color: var(--tooltip-background);
+}
+
+.tooltip-neuron {
+    padding-top: var(--tiny-padding);
+    padding-right: var(--padding);
+}
+
+.tooltip-neuron-container {
+    display: flex;
+    align-items: start;
+}
+
+.tooltip-text {
+    margin: 5px;
+}
+
+/* X-symbol */
+.x-symbol {
+    cursor: pointer;
+    visibility: hidden; /* Initially hide the symbol */
+    fill: transparent;
+}
+
+.x-symbol .x-line {
+    stroke: black;
+    stroke-width: var(--stroke-width);
+}
+
+/* Info box */
+.info-container {
+    display: inline-block;
+    position: absolute;
+}
+
+.info-symbol {
+    vertical-align: super;
+    -webkit-text-stroke-width: 0pt;
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+}
+
+#info-header {
+    font-size: 12pt;
+    color: var(--primary-color);
+}
+
+.info-box {
+    display: none;
+    background-color: var(--infobox-background);
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+    text-align: justify;
+    margin: var(--margin);
+    z-index: 999;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+}
+
+.info-box-inner {
+    border: var(--stroke-width) solid var(--primary-color);
+    border-radius: var(--border-radius);
+    padding: 72px;
+    color: var(--primary-color);
+}
+
+.info-box-title {
+    font-size: 20pt;
+}
+
+/** ----- SECONDARY VISUALIZATIONS ----- */
+.axis-label {
+    text-anchor: end;
+}
+
+/* Heatmap */
+.heatmap.neuron {
+    cursor: pointer;
+}
+
+.heatmaprect-hovered {
+    stroke: var(--hover-color);
+    stroke-width: 3px;
+    filter: drop-shadow(0px 0px 2px var(--hover-color));
+}
+
+.heatmaprect-hovered-main {
+    stroke: var(--hover-color);
+    stroke-width: 8px;
+    filter: drop-shadow(0px 0px 2px var(--hover-color));
+}
+
+/* Spike raster */
+.spike-raster {
+    display: flex;
+    flex-direction: row;
+    align-content: left;
+    color: black;
+}
+
+.cellrect {
+    cursor: pointer;
+    stroke: none;
+    stroke-opacity: 1;
+}
+
+.cellrect-hovered {
+    stroke: var(--hover-color);
+    filter: drop-shadow(0px 0px 2px var(--hover-color));
+}
+
+/* Potential plot */
+.potential-plot {
+    display: flex;
+    flex-direction: row;
+    align-content: left;
+}
+
+.potential-plot-line {
+    stroke: var(--primary-color);
+    stroke-opacity: 0.55;
+    stroke-width: var(--stroke-width);
+    fill: none;
+}
+
+.low-stroke-opacity {
+    stroke-opacity: 0.2;
+}
+
+.potential-plot-line-hovered {
+    stroke: var(--hover-color) !important;
+    stroke-width: var(--hover-stroke-width) !important;
+    stroke-opacity: 1.0 !important;
+    filter: drop-shadow(0px 0px 8px var(--glow-color));
+}
+
+.potential-overlay-plot-line {
+    fill: none;
+    stroke: var(--hover-color);
+    stroke-opacity: 1;
+    stroke-width: var(--hover-stroke-width);
+}
+
+.glow {
+    filter: drop-shadow(0px 0px 6px var(--glow-color));
+}
+/** ---------- */
+
+/* Slider */
+.slider-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-content: center;
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+}
+
+.slider-value-container {
+    border-radius: var(--border-radius);
+    margin: var(--half-margin);
+}
+
+.slider {
+    cursor: pointer;
+    overflow: hidden;
+    width: 80%;
+    height: var(--slider-width);
+    -webkit-appearance: none;
+    appearance: none; 
+    outline: none;
+    border-radius: var(--slider-thumb-width);
+    background-color: transparent;
+    opacity: 0.8;
+}
+
+.slider-target-dissim {
+    direction: rtl;
+    transform: scaleX(-1);
+    border: var(--stroke-width) solid var(--disable-color);
+}
+
+.slider-cutoff {
+    border: var(--stroke-width) solid var(--primary-color);
+}
+
+.slider-cluster-dist-cutoff {
+    border: var(--stroke-width) solid var(--primary-color);
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-runnable-track {
+    height: var(--slider-thumb-width);
+    border-radius: var(--slider-thumb-width);
+    background: var(--runnable-track-color);
+}
+
+.slider::-moz-range-track {
+    height: var(--slider-thumb-width);
+    border-radius: var(--slider-thumb-width);
+    background: var(--runnable-track-color);
+}
+
+.slider::-webkit-slider-thumb {
+    cursor: grab;
+    height: var(--slider-thumb-width);
+    width: var(--slider-thumb-width);
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: var(--slider-thumb-width);
+    background-color: white;
+}
+
+.slider::-webkit-slider-thumb:active {
+    cursor: grabbing;
+}
+
+.slider-target-dissim::-webkit-slider-thumb {
+    border: var(--stroke-width) solid var(--disable-color);
+    box-shadow: -407px 0 0 400px var(--disable-color);
+}
+
+.slider-cutoff::-webkit-slider-thumb {
+    border: var(--stroke-width) solid var(--primary-color);
+    box-shadow: -407px 0 0 400px var(--primary-color);
+}
+
+.slider-cluster-dist-cutoff::-webkit-slider-thumb {
+    border: var(--stroke-width) solid var(--primary-color);
+    box-shadow: -407px 0 0 400px var(--primary-color);
+}
+
+.slider::-moz-range-thumb {
+    cursor: grab;
+    height: var(--slider-thumb-width);
+    width: var(--slider-thumb-width);
+    border-radius: var(--slider-thumb-width);
+    background-color: #fff;
+}
+
+.slider::-moz-range-thumb:active {
+    cursor: grabbing;
+}
+
+.slider-target-dissim::-moz-range-thumb {
+    border: var(--stroke-width) solid var(--disable-color);
+    box-shadow: -407px 0 0 400px var(--disable-color);
+}
+
+.slider-cutoff::-moz-range-thumb {
+    border: var(--stroke-width) solid var(--primary-color);
+    box-shadow: -407px 0 0 400px var(--primary-color);
+}
+
+.slider-cluster-dist-cutoff::-moz-range-thumb {
+    border: var(--stroke-width) solid var(--primary-color);
+    box-shadow: -407px 0 0 400px var(--primary-color);
+}
+
+/* Color bar */
+.color-bar-container {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    justify-content: end;
+    width: 2.5%;
+    min-width: 56px;
+    margin: 0;
+    padding: var(--half-padding);
+}
+
+.color-bar-shadow {
+    filter: drop-shadow(0px 0px 6px var(--primary-color-semi-transparent));
+}
+
+.color-bar-items {
+    fill: var(--axis-default-color);
+}
+
+/* Selection */
+#clear-button {
+    cursor: pointer;
+    display: none;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 130px;
+    height: 40px;
+    border-radius: var(--border-radius);
+    margin-top: var(--margin);
+    padding: var(--tiny-padding);
+    border: var(--stroke-width) solid var(--no-selection-color);
+    color: var(--no-selection-color);
+    background-color: var(--tooltip-background);
+}
+
+#clear-button:hover {
+    border: var(--stroke-width) solid black;
+    color: black;
+}
+
+/* Test output LED */
+.led {
+    width: 12px;
+    height: 12px;
+    margin: var(--half-margin);
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 -1px 5px 1px, inset var(--inset-shadow-color) 0 -1px 4px, var(--outset-shadow-color) 0 1px 12px;
+}
+
+.led-green {
+    background-color: var(--target-color); /*hsl(130, 80%, 70%)*/
+    --inset-shadow-color: var(--target-shadow-color);
+    --outset-shadow-color: hsl(140, 100%, 80%);
+}
+
+.led-yellow {
+    background-color: hsl(50, 100%, 70%);
+    --inset-shadow-color: hsl(50, 97%, 35%);
+    --outset-shadow-color: hsl(50, 100%, 80%);
+}
+
+.led-red {
+    background-color: hsl(10, 100%, 60%);
+    --inset-shadow-color: hsl(10, 56%, 33%);
+    --outset-shadow-color: hsl(10, 100%, 70%);
+}
+
+/* Loader */
+#loader {
+    width: var(--size);
+    height: var(--size);
+    --size: 0px;
+    --size-big: 100px;
+    --size-small: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: spin 0.5s linear infinite;
+}
+
+#loader::after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 0;
+    border: var(--size-small) solid var(--primary-color);
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+
+#loader::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--size-big); 
+    height: var(--size-big);
+    background-color: var(--primary-color-semi-transparent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

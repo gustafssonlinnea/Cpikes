@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cpikes</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script type="text/javascript" src="./style.js" defer></script>
+    <script type="text/javascript" src="./fetching.js" defer></script>
+    <script type="text/javascript" src="./util.js" defer></script>
+    <script type="text/javascript" src="./settings.js" defer></script>
+    <script type="text/javascript" src="./hoverInfoAndHoverLinking.js" defer></script>
+    <script type="text/javascript" src="./zooming.js"></script>
+    <script type="text/javascript" src="./networkGraph.js" defer></script>
+    <script type="text/javascript" src="./spikeRasterAndPotentialOverTime.js" defer></script>
+    <script type="text/javascript" src="./colorBar.js" defer></script>
+    <script type="text/javascript" src="./processAndRenderData.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="sidebar-container">
+            <div class="header-dashboard">
+                <div class="header-container">
+                    <span class="header">
+                        Cpikes
+                        <span id="info-container" class="info-container">
+                            <span id="info-header" class="info-symbol">&#9432;</span>
+                        </span>
+                    </span>
+                    <div id="info-box" class="info-box">
+                        <div class="info-box-inner">
+                            <p class="info-box-title">Cpikes</p>
+                            <p><i>Linnéa Gustafsson, KTH Royal Institute of Technology, 2024</i></p>
+                            <h2>What is Cpikes?</h2>
+                            Cpikes is an XAI visual analytics tool that is part of the master's thesis <i>Explainable
+                                Spiking Neural Networks for Model Developers Using Interactive Treemapping &ndash; A
+                                Visual Analytics Design Study in Neuromorphic Computing</i> by Linnéa Gustafsson.
+                            The tool is based on hierarchical clusters calculated from spike train distances (more
+                            specifically, FastDTW distances) in a chosen Spiking Neural Network (SNN).
+                            The clusters are displayed through circular treemaps.
+                            <h2>Who wants to use Cpikes and why?</h2>
+                            The intended user is an SNN developer aiming to refine SNN networks. They want to be able to
+                            detect:
+                            <ul>
+                                <li>unnecessary neurons, <i>i.e.</i>, neurons that are either:
+                                    <ul>
+                                        <li><b>firing at a low or high rate</b> or</li>
+                                        <li><b>firing dissimilar to the target</b>, and</li>
+                                    </ul>
+                                </li>
+                                <li><b>neuron spike train similarity</b> in general.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard">
+                <h4>Hover</h4>
+                <button id="hover-info-toggle" class="collapsible"><span class="h3-2">Hover statistics <span
+                            title="Statistics of what is currently hovered in the visualizations."
+                            class="info-symbol">&#9432;</span></span></button>
+                <div class="content">
+                    <div class="content-child">
+                        <div id="hover-info-container"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard">
+                <h4>Settings</h4>
+                <button class="collapsible"><span class="h3-2">Target dissimilarity cutoff <span
+                            title="Marks neurons as dissimilar to the target if they are above the specified distance from the target."
+                            class="info-symbol">&#9432;</span></span></button>
+                <div class="content">
+                    <div class="content-child">
+                        <div class="slider-container">
+                            <input type="range" min="0.0" max="1.0" value="1.0" step="1"
+                                class="slider slider-target-dissim"
+                                id="slider-range-target-dissim">
+                            <span id="slider-value-target-dissim"
+                                class="slider-value-container slider-value-target-dissim"></span>
+                        </div>
+                    </div>
+                </div>
+                <button class="collapsible"><span class="h3-2">Cluster depth cutoff <span
+                            title="Sets the threshold for flattening the hierarchy, i.e., aggregating the neurons, above the specified cluster depth level."
+                            class="info-symbol">&#9432;</span></span></button>
+                <div class="content">
+                    <div class="content-child">
+                        <div class="slider-container">
+                            <input type="range" min="0.0" max="1.0" value="0" step="1"
+                                class="slider slider-cluster-dist-cutoff"
+                                id="slider-range-cluster-dist-cutoff">
+                            <span id="slider-value-cluster-dist-cutoff"
+                                class="slider-value-container slider-value-cutoff"></span>
+                        </div>
+                    </div>
+                </div>
+                <h4>Network, input & output</h4>
+                <button class="collapsible"><span class="h3-2">Spiking neural network <span
+                            title="Select which pre-trained spiking neural network to use for the visualization."
+                            class="info-symbol">&#9432;</span></span></button>
+                <div class="content">
+                    <div class="content-child">
+                        <div class="network-dropdown">
+                            <select id="networks" name="networklist" form="networkform">
+                            </select>
+                        </div>
+                        <div id="neural-network"></div>
+                        <table class="table-dashboard">
+                            <tr>
+                                <td>Number of layers</td>
+                                <td><span id="num-layers"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Number of neurons</td>
+                                <td><span id="num-neurons"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Time constant, <i>&tau;</i></td>
+                                <td><span id="tau"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Learning rate, <i>&eta;</i></td>
+                                <td><span id="lr"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Crop (18 x 18 center crop)</td>
+                                <td><span id="crop"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Multiplier</td>
+                                <td><span id="mul"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Data</td>
+                                <td><a href="https://www.garrickorchard.com/datasets/n-mnist" target="_blank">N-MNIST</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <button class="collapsible"><span class="h3-2">Test input <span
+                            title="Select which test input sequence to feed to the selected network."
+                            class="info-symbol">&#9432;</span></span></button>
+                <div class="content">
+                    <div class="content-child">
+                        <div class="network-dropdown">
+                            <select id="test-inputs" name="batchlist" form="batchform"></select>
+                            <!--TODO: name and form unused at the moment, remove?-->
+                        </div>
+                        <div class="popupMenu"></div>
+                        <div class="input-image-container">
+                            <img id="input-image" alt="Input image" width="200px" height="200px">
+                        </div>
+                        <table class="table-dashboard">
+                            <tr>
+                                <td>Target</td>
+                                <td><span id="target"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Spike train encoding</td>
+                                <td><span id="spike-train-encoding"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Number of time steps</td>
+                                <td><span id="num-time-steps"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Number of time step bins</td>
+                                <td><span id="num-bins"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Bin size</td>
+                                <td><span id="bin-size"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <button class="collapsible"><span class="h3-2">Test output <span
+                            title="The test output of the network represents its response to the test input. This output is determined by identifying the neuron in the output layer with the highest firing rate, which serves as the network's predicted result for the given input.&#13;&#13;In cases where the output contains multiple neurons with equally high firing rates, it signifies uncertainty or ambiguity in the prediction. If all of these neurons correspond to incorrect labels, the classification is marked as &quot;Ambiguous (all incorrect)&quot;. If one of these neurons corresponds to the correct label for the input, the classification is marked as &quot;Ambiguous (one correct)&quot;."
+                            class="info-symbol">&#9432;</span></span></button>
+                <div class="content">
+                    <div class="content-child">
+                        <div id="led" class="led"></div>
+                        <table class="table-dashboard">
+                            <tr>
+                                <td>Output</td>
+                                <td><span id="output"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Correctness</td>
+                                <td><span id="correct-output"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="color-bar-container"></div>
+        <div class="mid-container">
+            <div class="mid-header">
+                <button id="clear-button" onclick=deselectAllNeuronsAndClusters()>
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-dash-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                            <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
+                        </svg>
+                    </span>
+                    <span>Clear selection</span>
+                </button>
+            </div>
+            <div class="cpikes-container">
+                <div id="loader" class="loader-container">
+                    <div class="loader"></div>
+                </div>
+                <div id="cpikes" class="cpikes">
+                    <div id="zoom-tooltip" class="tooltip zoom-tooltip"></div>
+                </div>
+                <script src="./main.js" defer></script>
+                <script type="text/javascript" src="./selection.js" defer></script>
+
+            </div>
+        </div>
+        <div class="color-bar-container">
+            <div id="color-bar"></div>
+        </div>
+        <div class="sidebar-container selection-dashboard-container">
+            <div class="dashboard">
+                <h4>Selection</h4>
+                <button class="collapsible"><span class="h3-2">Selection statistics <span
+                            title="Statistics of what is currently selected in the visualizations."
+                            class="info-symbol">&#9432;</span></span></button>
+                <div class="content">
+                    <div class="content-child">
+                        <table id="selection-table" class="table-dashboard">
+                            <tr>
+                                <td>Number of neurons</td>
+                                <td><span id="num-selected-neurons"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Layers included</td>
+                                <td><span id="included-layers"></span></td>
+                            </tr>
+                        </table>
+                        <div class="tooltip-section-3">
+                            <table id="selection-table" class="table-dashboard">
+                                <caption>Firing rate</caption>
+                                <tr>
+                                    <td>Mean, <i>&mu;</i></td>
+                                    <td><span id="average-firing-rate"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Std. dev., <i>&sigma;</i></td>
+                                    <td><span id="std-dev-firing-rate"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Median</td>
+                                    <td><span id="median-firing-rate"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Min</td>
+                                    <td><span id="min-firing-rate"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Max</td>
+                                    <td><span id="max-firing-rate"></span></td>
+                                </tr>
+                            </table>
+
+                            <table id="selection-table" class="table-dashboard">
+                                <caption>Distance to target</caption>
+                                <tr>
+                                    <td>Mean, <i>&mu;</i></td>
+                                    <td><span id="mean-dist-target"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Std. dev., <i>&sigma;</i></td>
+                                    <td><span id="std-dev-dist-target"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Median</td>
+                                    <td><span id="median-dist-target"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Min</td>
+                                    <td><span id="min-dist-target"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Max</td>
+                                    <td><span id="max-dist-target"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <button id="dist-heatmap-toggle" class="collapsible"><span class="h3-2">Distance heatmap <span
+                            title="Visualization of the pairwise distances between the selected neurons."
+                            class="info-symbol">&#9432;</span></span></button>
+                <div class="content">
+                    <div class="content-child">
+                        <div id="heatmap" class="heatmap"></div>
+                    </div>
+                </div>
+                <button id="spike-raster-toggle" class="collapsible"><span class="h3-2">Spike raster <span
+                            title="Visualization of the spike trains of the selected neurons."
+                            class="info-symbol">&#9432;</span></span></button>
+                <div class="content">
+                    <div class="content-child">
+                        <div id="spike-raster" class="spike-raster"></div>
+                    </div>
+                </div>
+                <button id="potential-plot-toggle" class="collapsible"><span class="h3-2">Potential over time <span
+                            title="Visualization of the potential over time of the selected neurons."
+                            class="info-symbol">&#9432;</span></span></button>
+                <div class="content">
+                    <div class="content-child">
+                        <div id="potential-plot" class="potential-plot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

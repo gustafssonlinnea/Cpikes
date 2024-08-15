@@ -1,0 +1,10 @@
+[
+    "3layers_spiking_40-20-10_tau-100_lr-0.01_crop-True_mul-1.0",
+    "4layers_spiking_80-40-20-10_tau-100.0_lr-0.01_crop-False_mul-2.0",
+    "3layers_spiking_40-20-10_tau-100.0_lr-1e-05_crop-True_mul-0.25",
+    "3layers_spiking_40-20-10_tau-400.0_lr-100.0_crop-True_mul-1.0",
+    "3layers_spiking_100-60-10_tau-100.0_lr-1e-05_crop-True_mul-1.0",
+    "3layers_spiking_200-40-10_tau-100.0_lr-1e-05_crop-True_mul-1.0",
+    "3layers_spiking_40-20-10_tau-100.0_lr-1e-05_crop-True_mul-4.0",
+    "4layers_spiking_80-40-20-10_tau-100.0_lr-0.01_crop-False_mul-1.0"
+]
