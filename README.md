@@ -6,7 +6,7 @@
 - **Degree Program**: Master of Science in Computer Science
 - **Year**: 2024
 
-This is the repository of the master's thesis *Explainable Spiking Neural Networks for Model Developers Using Interactive Treemapping – A Visual Analytics Design Study in Neuromorphic Computing* by Linnéa Gustafsson, KTH, 2024. The repository constitutes the code of the tool *Cpikes*, a visual analytics tool for Spiking Neural Networks (SNNs).
+This is the repository of the master's thesis [*Explainable Spiking Neural Networks for Model Developers Using Interactive Treemapping – A Visual Analytics Design Study in Neuromorphic Computing*](https://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1936752&dswid=2615) by Linnéa Gustafsson, KTH, 2024. The repository constitutes the code of the tool *Cpikes*, a visual analytics tool for Spiking Neural Networks (SNNs).
 
 ## Table of Contents
 - [Cpikes](#cpikes)
